@@ -122,8 +122,7 @@
 @stop
 
 @section('css')
-    {{-- Add here extra stylesheets --}}
-    {{-- <link rel="stylesheet" href="/css/admin_custom.css"> --}}
+    @vite(['resources/css/app.css'])
 @stop
 
 @section('js')

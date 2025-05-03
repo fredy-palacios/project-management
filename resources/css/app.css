@@ -1,3 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.btn-project-add {
+    padding: 2px 25px;
+    margin-right: 6px;
+}
+
+.btn-project-pdf {
+    padding: 2px 25px;
+}
