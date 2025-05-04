@@ -7,30 +7,43 @@
 @stop
 
 @section('content')
-    <div class="col-md-4">
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">Control de proyectos</h3>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Control de proyectos</h3>
 
-                <button class="btn btn-primary btn-sm float-right btn-project-pdf" style="padding: 2px 25px;">
-                    <i class="fas fa-file-pdf"></i>
-                </button>
-
-                <button
-                    type="button"
-                    class="btn btn-primary btn-sm float-right create-btn btn-project-add"
-                    data-toggle="modal"
-                    data-target="#create-modal"
-                >
-                    <i class="fas fa-plus"></i>
-                </button>
-            </div>
-
-            <div class="card-body">
-                <div id="projects-container"></div>
+                    <button class="btn btn-primary btn-sm float-right btn-project-pdf" style="padding: 2px 25px;">
+                        <i class="fas fa-file-pdf"></i>
+                    </button>
+                    @auth
+                        @if (auth()->user()->profile === 'admin')
+                            <button
+                                type="button"
+                                class="btn btn-primary btn-sm float-right create-btn btn-project-add"
+                                data-toggle="modal"
+                                data-target="#create-modal"
+                            >
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        @endif
+                    @endauth
+                </div>
+                <div class="card-body">
+                    <div id="projects-container"></div>
+                </div>
             </div>
         </div>
+
+        <div class="col-md-8">
+            <div class="card">
+                <div class="col-md-12" id='calendar'>
+                </div>
+            </div>
+        </div>
+
     </div>
+
 
     <div class="modal fade" id="create-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
@@ -57,7 +70,7 @@
 @stop
 
 @section('css')
-    @vite(['resources/css/app.css'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 @stop
 
 @section('js')
@@ -78,7 +91,7 @@
                             const date = new Date(project.created_at).toLocaleDateString();
 
                             container.append(`
-                            <div class="card text-white bg-warning">
+                            <div class="card text-white bg-warning external-event" draggable="true" data-project-id="${project.id}" data-project-name="${project.name}">
                                 <div class="card-body d-flex justify-content-between align-items-center">
                                     <div class="col-sm-8">
                                         <strong >${project.name}</strong>
@@ -130,5 +143,17 @@
 
             loadProjects();
         });
+    </script>
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function() {
+            let calendarEl = document.getElementById('calendar');
+            let calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth'
+            });
+            calendar.render();
+        });
+
     </script>
 @stop

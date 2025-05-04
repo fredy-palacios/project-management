@@ -15,6 +15,7 @@
         <link href="{{ asset('vendor/adminlte/plugins/fontawesome-free/css/all.min.css') }}" rel="stylesheet">
 
         <!-- Scripts -->
+        <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js'></script>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased">
