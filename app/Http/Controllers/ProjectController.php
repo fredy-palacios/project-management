@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Project;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\View\View;
 
@@ -11,8 +12,10 @@ class ProjectController extends Controller
 {
     public function index(): View
     {
+        $users = User::all();
+
         $projects = Project::all();
-        return view('projects.index')->with(['projects' => $projects]);
+        return view('projects.index')->with(['projects' => $projects, 'users' => $users]);
     }
 
     public function store(Request $request): JsonResponse

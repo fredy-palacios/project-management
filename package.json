@@ -18,6 +18,5 @@
         "vite": "^6.2.4"
     },
     "dependencies": {
-        "fullcalendar": "^6.1.17"
     }
 }

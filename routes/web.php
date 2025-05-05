@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\TaskController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -30,6 +31,10 @@ Route::middleware('auth')->group(function () {
     Route::get('projects', [ProjectController::class, 'index'])->name('projects.index');
     Route::post('projects', [ProjectController::class, 'store'])->name('projects.store');
     Route::get('projects/all', [ProjectController::class, 'getAll'])->name('projects.getAll');
+
+    Route::post('tasks', [TaskController::class, 'store'])->name('task.store');
+    Route::get('tasks', [TaskController::class, 'getAllEvents'])->name('task.getAll');
+    Route::get('tasks/user/{id}', [TaskController::class, 'getTasksByUser'])->name('task.getTasksByUser');
 });
 
 require __DIR__.'/auth.php';
