@@ -21,6 +21,7 @@ class UserSeeder extends Seeder
             'profile' => 'admin',
         ]);
 
+        /*
         User::create([
             'name' => 'RUser',
             'email' => 'user@example.com',
@@ -29,5 +30,6 @@ class UserSeeder extends Seeder
         ]);
 
         User::factory()->count(10)->create();
+        */
     }
 }

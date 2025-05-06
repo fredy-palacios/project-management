@@ -10,6 +10,7 @@
 
     @include('modals.project')
     @include('modals.task')
+    @include('modals.pdf')
 
     <div class="row">
         <div class="col-md-4">
@@ -17,7 +18,12 @@
                 <div class="card-header">
                     <h3 class="card-title">Control de proyectos</h3>
 
-                    <button class="btn btn-primary btn-sm float-right btn-project-pdf" style="padding: 2px 25px;">
+                    <button
+                        type="button"
+                        class="btn btn-primary btn-sm float-right btn-project-pdf create-btn-pdf"
+                        data-toggle="modal"
+                        data-target="#create-modal-pdf"
+                    >
                         <i class="fas fa-file-pdf"></i>
                     </button>
                     @auth
@@ -63,6 +69,16 @@
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
 
     <script>
+        function isEndDateValid(startDate, endDate) {
+            const start = new Date(startDate);
+            const end = new Date(endDate);
+
+            start.setHours(0, 0, 0, 0);
+            end.setHours(0, 0, 0, 0);
+
+            return end >= start;
+        }
+
         $(document).ready(function () {
             function loadProjects() {
                 $.ajax({
@@ -146,6 +162,11 @@
             });
 
             loadProjects();
+
+            $('.create-btn-pdf').click(function () {
+                $('#create-form-pdf')[0].reset();
+                $('#create-modal-pdf').modal('show');
+            });
         });
 
         document.addEventListener('DOMContentLoaded', function () {
@@ -210,6 +231,7 @@
                     const event = info.event;
                     const start = event.start;
 
+                    $('#task-form')[0].reset();
                     $('#task-start').val(start);
                     $('#task-modal').modal('show');
 
@@ -252,6 +274,11 @@
                 const dateTo = $('#task-end').val();
                 const csrfToken = $('meta[name="csrf-token"]').attr('content');
 
+                if (!isEndDateValid(dateFrom, dateTo)) {
+                    alert('La fecha de fin debe ser igual o posterior a la fecha de inicio');
+                    return;
+                }
+
                 $.ajax({
                     url: '/tasks',
                     method: 'POST',
@@ -275,6 +302,24 @@
             });
 
             calendar.render();
+        });
+
+        document.getElementById('create-form-pdf').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const startDate = document.getElementById('start-date-pdf').value;
+            const endDate = document.getElementById('end-date-pdf').value;
+            const projectId = document.getElementById('project-select-pdf').value;
+            const userId = document.getElementById('user-select-pdf').value;
+
+            document.getElementById('hidden-start-date').value = startDate;
+            document.getElementById('hidden-end-date').value = endDate;
+            document.getElementById('hidden-project-id').value = projectId;
+            document.getElementById('hidden-user-id').value = userId !== '0' ? userId : '';
+
+            document.getElementById('download-pdf-form').submit();
+
+            $('#create-modal-pdf').modal('hide');
         });
     </script>
 @stop
